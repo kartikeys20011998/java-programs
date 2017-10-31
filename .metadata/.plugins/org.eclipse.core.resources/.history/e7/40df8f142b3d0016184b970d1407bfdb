@@ -1,0 +1,33 @@
+import java.io.InputStreamReader;//to read from keyboard
+import java.io.BufferedReader;//read from buffer
+import java .io.IOException;//for try and catch
+public class javaIO2 {
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		/*
+		// TODO Auto-generated method stub
+		InputStreamReader ir=new InputStreamReader(System.in);
+		BufferReader br =new BufferReader(ir);
+		
+		String name=null;
+		int age=0;
+		System.out.println("Enter name:");
+		try{
+			name=br.readLine();
+			
+		}
+		catch(IOException e){
+			
+			System.out.println("IO error " +e.getMessege());
+			System.exit(0);
+			}
+		System.out.println("Enter age:");
+		try{
+			age=Integer
+		}
+		}
+*/
+}

@@ -1,0 +1,334 @@
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
+
+public class entrytabbedform extends JFrame implements ActionListener,ItemListener {
+
+	
+	//public static entrytabbedform myselfentryform;
+	public static void main(String[] args) {
+		new entrytabbedform();
+	}
+	Connection con=null;//interface to conect with data
+	Statement st=null;//interface to execute queries on table
+	//ResultSet rs=null;//interface to read data from table
+	String txt=null;
+
+
+
+	
+	private JTabbedPane tabbedPane;
+	private JPanel panel1;
+	private JPanel panel2;
+	private JPanel panel3;
+	private JPanel panel4;
+	 JButton exitbt2=new JButton("Exit_2");
+	 JButton exitbt3=new JButton("Exit_3");
+	 JButton exitbt4=new JButton("Exit_4");
+	 
+	JLabel lb1=new JLabel("ENTRY FORM");
+	JLabel lb2=new JLabel("Enter name:");
+	JLabel lb3=new JLabel("Enter Salary:");
+	JLabel lb4=new JLabel("Select date:");
+	JLabel lb5=new JLabel("Select Gender:");
+	JLabel lb6=new JLabel("Your id is:");
+	JLabel lb7=new JLabel("");
+	
+	JTextField t1=new JTextField();//for writing any text in the labels
+	JTextField t2=new JTextField();
+	JComboBox comboyear=new JComboBox();
+	JComboBox combomonth=new JComboBox();
+	JComboBox combo28=new JComboBox();
+	JComboBox combo29=new JComboBox();
+	JComboBox combo30=new JComboBox();
+	JComboBox combo31=new JComboBox();
+	JComboBox combogender=new JComboBox();
+	
+	ButtonGroup group =new ButtonGroup();
+	JButton addbt=new JButton("Add");
+	
+ 
+
+ public entrytabbedform()
+ 
+ {
+	 setTitle("Kriti Sharma");
+	 setSize(1000,650);
+	 setLocation(50,10);
+	 setBackground(Color.gray);
+	 setResizable(false);
+	 //setLayout(null);
+	 JPanel topPanel=new JPanel();//it is outer panel
+	 //in inner panel add all panel with tab captions
+	 topPanel.setLayout(new BorderLayout());
+	 getContentPane().add(topPanel);
+	 createPage1();
+	 createPage2();
+	 createPage3();
+	 createPage4();
+	 tabbedPane=new JTabbedPane();
+	 tabbedPane.addTab("Employee Entry Form", panel1);
+	 tabbedPane.addTab("Employee Search Form", panel2);
+	 tabbedPane.addTab("Employee Update Form", panel3);
+	 tabbedPane.addTab("Employee Delete Form", panel4);
+	 
+	 //panel1.setVisible(true);
+	//panel2.setVisible(true);
+	//panel3.setVisible(true);
+	//panel4.setVisible(true);
+	 //in the outer panel add inner panel with all sub panels
+	 topPanel.add(tabbedPane,BorderLayout.CENTER);
+	 tabbedPane.setVisible(true);
+	 
+	
+	 
+	 this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	 setVisible(true);
+ }
+ String name="";
+	int id=0;
+	double salary=0;
+	String sex="FEMALE";
+	String dob="";
+	int y=1950,m=1,d=1,f=0;
+ void openConnection()
+	{
+		try{
+			Class.forName("com.mysql.jdbc.Driver");
+			con=DriverManager.getConnection("jdbc:mysql://localhost:3306/employee","root","");
+			}
+			catch (ClassNotFoundException e){
+				System.out.println("Invalid Driver" +e.getMessage());
+				System.exit(0);
+				
+			}
+			catch (SQLException e){
+				System.out.println("Invalid Dsn" +e.getMessage());
+				System.exit(0);
+				
+				
+			}	
+	}
+	void closeConnection()
+	{
+		try{
+			con.close();
+			}
+			catch(SQLException e){
+				}
+	}
+		
+ 
+ public void createPage1()
+ {
+	 panel1=new JPanel();
+	 panel1.setLayout(null);
+//	 setSize(900,600);
+	//	setLocation(10,10);
+	//	setLayout(null);
+		comboyear.setBounds(200, 90, 80, 20);
+		combomonth.setBounds(300, 90, 60, 20);
+		combo28.setBounds(380, 90, 50, 20);
+		combo29.setBounds(380, 90, 50, 20);
+		combo30.setBounds(380, 90, 50, 20);
+		combo31.setBounds(380, 90, 50, 20);
+		
+		combogender.setBounds(200,120,150,20);
+		
+		for(int i=1950;i<=2050;i++)
+			comboyear.addItem(""+i);
+		for(int i=1;i<=12;i++)
+			combomonth.addItem(""+i);
+		for(int i=1;i<=28;i++)
+			combo28.addItem(""+i);
+		for(int i=1;i<=29;i++)
+			combo29.addItem(""+i);
+		for(int i=1;i<=30;i++)
+			combo30.addItem(""+i);
+		for(int i=1;i<=31;i++)
+			combo31.addItem(""+i);
+		
+		
+		
+		combogender.addItem("FEMALE");
+		combogender.addItem("MALE");
+		combogender.addItem("TRANSGENDER");
+		comboyear.setSelectedIndex(0);
+		combomonth.setSelectedIndex(0);
+		combo28.setSelectedIndex(0);
+		combo29.setSelectedIndex(0);
+		combo30.setSelectedIndex(0);
+		combo31.setSelectedIndex(0);
+		combogender.setSelectedIndex(0);
+		
+
+		
+		lb1.setBounds(375,20,150,30);
+		
+		t1.setBounds(200,30,150,20);
+		lb2.setBounds(30,30,150,20);
+	
+		t2.setBounds(200,60,150,20);
+		lb3.setBounds(30,60,150,20);
+		
+		lb4.setBounds(30,90,150,20);
+		
+		
+		
+		lb5.setBounds(30,120,150,20);
+		lb6.setBounds(30,150,120,20);
+		lb7.setBounds(170,150,90,20);
+		
+		addbt.setBounds(30,210,150,20);
+		
+		panel1.add(addbt);
+		panel1.add(lb1);
+		panel1.add(lb2);
+		panel1.add(lb3);
+		panel1.add(lb4);
+		panel1.add(lb5);
+		panel1.add(lb6);
+		panel1.add(lb7);
+		panel1.add(t1);
+		panel1.add(t2);
+		panel1.add(comboyear);
+		panel1.add(combomonth);
+		panel1.add(combo28);
+		panel1.add(combo29);
+		panel1.add(combo30);
+		panel1.add(combo31);
+		panel1.add(combogender);
+		 t1.requestFocus();
+		 addbt.addActionListener(this);
+		 comboyear.addItemListener(this);
+		 combomonth.addItemListener(this);
+		 combo28.addItemListener(this);
+		 combo29.addItemListener(this);
+		 combo30.addItemListener(this);
+		 combo31.addItemListener(this);
+		 combogender.addItemListener(this);
+		 combo28.setVisible(false);
+		 combo29.setVisible(false);
+		 combo30.setVisible(false);
+		 combo31.setVisible(true);
+		 
+	
+	
+ }
+ 
+ public void createPage2()
+ {
+	 panel2=new JPanel();
+	 panel2.setLayout(null);
+	 exitbt2.setBounds(10,50,150,20);
+	 panel2.add(exitbt2);
+	 exitbt2.addActionListener(this);
+	 
+ }
+ public void createPage3()
+ {
+	 panel3=new JPanel();
+	 panel3.setLayout(null);
+	 exitbt3.setBounds(10,90,150,20);
+	 panel3.add(exitbt3);
+	 exitbt3.addActionListener(this);
+ }
+	 
+	 public void createPage4()
+	 {
+		 panel4=new JPanel();
+		 panel4.setLayout(null);
+		 exitbt4.setBounds(10,120,150,20);
+		 panel4.add(exitbt4);
+		 exitbt4.addActionListener(this);
+ 
+}
+		 public void actionPerformed(ActionEvent e){
+				
+				if(e.getActionCommand().equals("Add"))
+				{
+					name=t1.getText().toUpperCase().trim();
+					salary=Double.parseDouble(t2.getText().trim());
+					try
+					{
+						openConnection();
+					st=con.createStatement();
+					String qry="insert into emp values(0,'"+name+"','"+dob+"',"+salary+",'"+sex+"')";
+					//System.out.print(qry);//to print qry on screen
+					st.executeUpdate(qry); //for insert,update,delete
+					closeConnection();
+					}
+					catch(Exception ee)
+					{
+						System.out.println("bbb"+ee.getMessage());
+					}
+				}
+		 }
+				
+				public void itemStateChanged(ItemEvent ie){
+					y=Integer.parseInt(comboyear.getSelectedItem().toString());
+					m=Integer.parseInt(combomonth.getSelectedItem().toString());
+					sex=combogender.getSelectedItem().toString();
+					if(m==1||m==3||m==5||m==7||m==8||m==10||m==12)
+						
+					{
+						combo28.setVisible(false);
+						 combo29.setVisible(false);
+						 combo30.setVisible(false);
+						 combo31.setVisible(true);
+						 d=Integer.parseInt(combo31.getSelectedItem().toString());
+					}
+					else
+						if (m==4||m==6||m==9||m==11)
+					{
+							combo28.setVisible(false);
+							 combo29.setVisible(false);
+							 combo31.setVisible(false);
+							 combo30.setVisible(true);
+							 d=Integer.parseInt(combo30.getSelectedItem().toString());
+					}
+						else
+							if (m==2&&y%100==0&&y%400==0||y%100!=0&&y%4==0)
+						{
+								combo28.setVisible(false);
+								 combo30.setVisible(false);
+								 combo31.setVisible(false);
+								 combo29.setVisible(true);
+								 d=Integer.parseInt(combo29.getSelectedItem().toString());
+						}
+							else
+								if (m==2)
+							{
+									combo29.setVisible(false);
+									 combo30.setVisible(false);
+									 combo31.setVisible(false);
+									 combo28.setVisible(true);
+									 d=Integer.parseInt(combo28.getSelectedItem().toString());
+							}
+					dob=y+"-"+m+"-"+d;
+					System.out.println(dob+sex);
+					repaint();
+				
+
+				}
+		 }
+		 
+
+		 

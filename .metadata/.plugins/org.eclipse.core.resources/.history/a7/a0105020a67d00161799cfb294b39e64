@@ -1,0 +1,110 @@
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+public class Main_Form extends JFrame implements ActionListener{
+public static Main_Form myselfMain_Form=null;
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+Main_Form.myselfMain_Form=new Main_Form();
+	}
+	JLabel lb1=new JLabel("User Id");
+	JLabel lb2=new JLabel("Password");
+	JLabel lb3=new JLabel("Designation");
+	
+	JTextField t1=new JTextField();
+//	JTextField t2=new JTextField();
+	JPasswordField t2=new JPasswordField();
+	JTextField t3=new JTextField();
+	
+	JButton okbt=new JButton("OK");
+	JButton exitbt=new JButton("EXIT");
+	
+	 public Main_Form()
+	    {
+	    	
+	    	setSize(500,300);
+	    	setLocation(10,10);
+	    	setLayout(null);
+
+	    	lb1.setBounds(20,20,100,20);
+	    	lb2.setBounds(20,60,100,20);
+	    	lb3.setBounds(20,100,100,20);
+	    	t1.setBounds(140,20,100,20);
+	    	t2.setBounds(140,60,100,20);
+	    	t3.setBounds(140,100,100,20);
+	        t2.setEchoChar('*');
+	        t2.addActionListener(this);	
+	    	okbt.setBounds(200,100,100,20);
+	    	exitbt.setBounds(200,150,100,20);
+	    	
+	    	add(lb1);
+	    	add(lb2);
+	    	add(t1);
+	    	add(t2);
+	    	add(okbt);
+	    	add(exitbt);
+	    	 
+	    	okbt.addActionListener(this);
+	    	exitbt.addActionListener(this);
+	    	
+	        setVisible(true);
+	    }
+	 public void actionPerformed(ActionEvent e){
+			
+		 if(e.getActionCommand().equals("EXIT"))
+			{
+			 System.exit(0);
+			}
+		 if(e.getActionCommand().equals("OK"))
+			{
+			 String uid=t1.getText().trim();
+			 char []aa=t2.getPassword();//to collect values in char array
+			 String pw=new String(aa);//to convert into string
+			 t1.setText("");
+			 t2.setText("");
+			 if(uid.equals("administrator")&&pw.equals("admin"))
+			 {
+				 if(roomdir.myselfroomdir==null)
+				 {
+					 roomdir.myselfroomdir=new roomdir();
+					 roomdir.myselfroomdir.setVisible(true);
+					 Main_Form.myselfMain_Form.setVisible(false);
+				 }
+				 else
+				 {
+					 roomdir.myselfroomdir.setVisible(true);
+					 Main_Form.myselfMain_Form.setVisible(false); 
+				 }
+			 }
+			 else
+				 
+				 if(uid.equals("manager")&&pw.equals("manager"))
+			 {
+				 if(customer1.myselfcustomer1==null)
+				 {
+					 customer1.myselfcustomer1=new customer1();
+					 customer1.myselfcustomer1.setVisible(true);
+					 Main_Form.myselfMain_Form.setVisible(false);
+				 }
+				 else
+				 {
+					 customer1.myselfcustomer1.setVisible(true);
+					 Main_Form.myselfMain_Form.setVisible(false); 
+				 }
+				 
+			 } 
+			 
+			 
+			// System.exit(0);
+			}
+	 }
+
+}

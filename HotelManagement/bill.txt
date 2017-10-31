@@ -1,0 +1,33 @@
+*************BILL************** 
+
+Hotel Castle View 
+Ramnagar Chowk 
+Roorkee 
+
+Rec. No.:27 Date:Fri Jun 30 14:38:56 GMT 2017
+
+Name Of Customer :AA
+
+Address          :SS
+
+Mobile No.       :22222
+
+Total Persons    :1
+
+Customer Hotel ID:15
+
+CheckIn Date     :Fri Sep 23 14:15:17 GMT 2016
+
+CheckOut Date    :Fri Jun 30 14:38:56 GMT 2017
+
+R.ID Cat.                 Bed             T.R. T.D. Rent/Day   ToT        
+  29 Delux                Single Bed      1    1        3500.0     3500.0 
+
+
+Total Cost Rs    :3500.0
+
+Total Advance Rs :3500.0
+
+****All Clear****
+  ____________________________________________________________________ 
+*************Thanks For Visiting************

@@ -1,0 +1,26 @@
+import java.awt.event.ActionListener;
+import java.awt.event.ItemListener;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+
+
+
+
+	public class checkout extends JFrame implements ActionListener,ItemListener {
+		public static void main(String[] args) {
+			new checkout();
+
+	}
+		Connection con=null;//interface to conect with data
+		Statement st=null;//interface to execute queries on table
+		ResultSet rs=null;//interface to read data from table
+		
+		
+		 
+		JLabel lb=new JLabel("CHECK OUT FORM");
+
+}

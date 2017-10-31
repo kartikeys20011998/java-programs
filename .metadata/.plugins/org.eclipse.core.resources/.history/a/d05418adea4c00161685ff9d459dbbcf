@@ -1,0 +1,120 @@
+import java.applet.*;
+import java.awt.*;
+import java.awt.event.*;
+
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+
+public class entryform extends JFrame implements ActionListener,ItemListener {
+	public static void main(String[] args) {
+		new entryform();
+	}
+	String txt=null;
+	
+	JLabel lb1=new JLabel("ENTRY FORM");
+	JLabel lb2=new JLabel("Enter name:");
+	JLabel lb3=new JLabel("Enter Salary:");
+	JLabel lb4=new JLabel("Select date:");
+	JLabel lb5=new JLabel("Select Gender:");
+	JLabel lb6=new JLabel("Your id is:");
+	JLabel lb7=new JLabel("");
+	
+	JTextField t1=new JTextField();//for writing any text in the labels
+	JTextField t2=new JTextField();
+	JComboBox comboyear=new JComboBox();
+	JComboBox combomonth=new JComboBox();
+	JComboBox combo28=new JComboBox();
+	JComboBox combo29=new JComboBox();
+	JComboBox combo30=new JComboBox();
+	JComboBox combo31=new JComboBox();
+	JComboBox combogender=new JComboBox();
+	
+	ButtonGroup group =new ButtonGroup();
+	
+	
+	
+	JButton addbt=new JButton("Add");
+	JButton searchbt=new JButton("Search");
+	JButton updatebt=new JButton("Update");
+	JButton deletebt=new JButton("Delete");
+	JButton exitbt=new JButton("Exit");
+	public entryform(){
+
+		setSize(600,600);
+		setLocation(10,10);
+		setLayout(null);
+		
+		comboyear.addItem(for int i=1950;i=2050;i++);
+		
+		combomonth.addItem("JANUARY");
+		combomonth.addItem("JANUARY");
+		
+		combo28.addItem("Windows 200");
+		combo29.addItem("Windows xp");
+		combo30.addItem("Windows vista");
+		combo31.addItem("31");
+		combogender.addItem("MALE");
+		combogender.addItem("FEMALE");
+		combogender.addItem("TRANSGENDER");
+		
+		com1.setSelectedIndex(3);
+		
+		lb1.setBounds(30,30,150,20);
+		
+		t1.setBounds(200,30,150,20);
+		lb2.setBounds(30,60,150,20);
+	
+		t2.setBounds(200,60,150,20);
+		lb3.setBounds(30,90,150,20);
+		comboyear.setBounds(200, 90, 80, 20);
+		combomonth.setBounds(300, 90, 60, 20);
+		combo28.setBounds(380, 300, 30, 20);
+		combo29.setBounds(380, 300, 30, 20);
+		combo30.setBounds(380, 300, 30, 20);
+		combo31.setBounds(380, 300, 30, 20);
+		lb4.setBounds(30,120,150,20);
+		combogender.setBounds(200,120,150,20);
+		
+		
+		lb5.setBounds(30,150,150,20);
+		addbt.setBounds(30,210,150,20);
+		searchbt.setBounds(60,210,150,20);
+		updatebt.setBounds(90,210,150,20);
+		deletebt.setBounds(120,210,150,20);
+		exitbt.setBounds(30,260,150,20);
+		
+		
+
+		 add(lb1);
+		 add(t1);
+		 add(lb2);
+		 add(t2);
+		 add(lb3);
+		 add(comboyear);
+		 add(combomonth);
+		 add(combo28);
+		 add(combo29);
+		 add(combo30);
+		 add(combo31);
+		 add(combogender);
+		 add(lb4);
+		 add(lb5);
+		 
+		 add(addbt);
+		 add(searchbt);
+		 add(updatebt);
+		 add(deletebt);
+		 add(exitbt);
+		 t1.requestFocus();
+		
+		
+	}
+	
+
+
+	}
+
+

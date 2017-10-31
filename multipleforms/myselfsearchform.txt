@@ -1,0 +1,5 @@
+name
+dob
+id14
+sex
+salary0.0

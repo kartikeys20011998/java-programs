@@ -1,0 +1,224 @@
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
+
+public class roomdir extends JFrame  {
+
+	
+	public static void main(String[] args) {
+		new roomdir();
+	}
+	Connection con=null;//interface to conect with data
+	Statement st=null;//interface to execute queries on table
+	//ResultSet rs=null;//interface to read data from table
+	String txt=null;
+
+
+
+	
+	private JTabbedPane tabbedPane;
+	private JPanel panel1;
+	private JPanel panel2;
+	private JPanel panel3;
+	private JPanel panel4;
+	 JButton exitbt2=new JButton("Exit_2");
+	 JButton exitbt3=new JButton("Exit_3");
+	 JButton exitbt4=new JButton("Exit_4");
+	 
+	
+	
+	 
+	JLabel lb1=new JLabel(" NEW ENTRY FORM");
+	JLabel lb2=new JLabel("Select the type of room:");
+	JLabel lb3=new JLabel("Select the Beds needed:");
+	JLabel lb4=new JLabel("Total number of room available:");
+	JLabel lb5=new JLabel("Per day charges:");
+	
+
+	
+	JTextField t1=new JTextField();//for writing any text in the labels
+	JTextField t2=new JTextField();
+	JComboBox comboroom=new JComboBox();
+	JComboBox combobed=new JComboBox();
+
+	
+	ButtonGroup group =new ButtonGroup();
+	JButton addbt=new JButton("ADD");
+	JButton backbt=new JButton("BACK");
+	
+ 
+
+ public roomdir ()
+ 
+ {
+	 setTitle("ROOM DIRECTORY FORM");
+	 setSize(1000,650);
+	 setLocation(50,10);
+	 setBackground(Color.BLUE);
+	 setResizable(false);
+	 //setLayout(null);
+	 JPanel topPanel=new JPanel();//it is outer panel
+	 //in inner panel add all panel with tab captions
+	 topPanel.setLayout(new BorderLayout());
+	 getContentPane().add(topPanel);
+	 createPage1();
+	 createPage2();
+	 createPage3();
+	 createPage4();
+	 tabbedPane=new JTabbedPane();
+	 tabbedPane.addTab("New Entry", panel1);
+	 tabbedPane.addTab("Edit", panel2);
+	 tabbedPane.addTab("Delete", panel3);
+	 tabbedPane.addTab("History", panel4);
+	 
+	 //panel1.setVisible(true);
+	//panel2.setVisible(true);
+	//panel3.setVisible(true);
+	//panel4.setVisible(true);
+	 //in the outer panel add inner panel with all sub panels
+	 topPanel.add(tabbedPane,BorderLayout.CENTER);
+	 tabbedPane.setVisible(true);
+	 
+	
+	 
+	 this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	 setVisible(true);
+ }
+ 
+ void openConnection()
+	{
+		try{
+			Class.forName("com.mysql.jdbc.Driver");
+			con=DriverManager.getConnection("jdbc:mysql://localhost:3306/employee","root","");
+			}
+			catch (ClassNotFoundException e){
+				System.out.println("Invalid Driver" +e.getMessage());
+				System.exit(0);
+				
+			}
+			catch (SQLException e){
+				System.out.println("Invalid Dsn" +e.getMessage());
+				System.exit(0);
+				
+				
+			}	
+	}
+	void closeConnection()
+	{
+		try{
+			con.close();
+			}
+			catch(SQLException e){
+				}
+	}
+		
+ 
+ public void createPage1()
+ {
+	 panel1=new JPanel();
+	 panel1.setLayout(null);
+//	 setSize(900,600);
+	//	setLocation(10,10);
+	//	setLayout(null);
+	
+		comboroom.setBounds(450,20,150,30);
+		combobed.setBounds(200,100,80,20);
+		
+		
+	 comboroom.addItem("AC");
+		comboroom.addItem("Non AC");
+		comboroom.addItem("Delux");
+		comboroom.addItem(" Super Delux");
+		comboroom.addItem("V.I.P");
+		combobed.addItem("Single Bed");
+		combobed.addItem("Doble Bed");
+		combobed.addItem("Family Suit");
+		comboroom.setSelectedIndex(0);
+	 
+		
+		lb1.setBounds(375,20,150,30);
+		
+		t1.setBounds(200,30,150,20);
+		lb2.setBounds(30,30,150,20);
+	
+		t2.setBounds(200,60,150,20);
+		lb3.setBounds(30,60,150,20);
+		
+		lb4.setBounds(30,90,150,20);
+		lb5.setBounds(20,100,150,20);
+		
+		
+
+		
+		addbt.setBounds(30,210,150,20);
+		backbt.setBounds(55,210,150,20);
+		
+		panel1.add(addbt);
+		panel1.add(lb1);
+		panel1.add(lb2);
+		panel1.add(lb3);
+		panel1.add(lb4);
+		panel1.add(lb5);
+		panel1.add(comboroom);
+		panel1.add(combobed);
+		
+		panel1.add(t1);
+		panel1.add(t2);
+		
+		 t1.requestFocus();
+		 //addbt.addActionListener(this);
+		 //backbt.addActionListener(this);
+			
+			
+	
+	
+ }
+ 
+ public void createPage2()
+ {
+	 panel2=new JPanel();
+	 panel2.setLayout(null);
+	 exitbt2.setBounds(10,50,150,20);
+	 panel2.add(exitbt2);
+	// exitbt2.addActionListener(this);
+	 
+ }
+ public void createPage3()
+ {
+	 panel3=new JPanel();
+	 panel3.setLayout(null);
+	 exitbt3.setBounds(10,90,150,20);
+	 panel3.add(exitbt3);
+	 //exitbt3.addActionListener(this);
+ }
+	 
+	 public void createPage4()
+	 {
+		 panel4=new JPanel();
+		 panel4.setLayout(null);
+		 exitbt4.setBounds(10,120,150,20);
+		 panel4.add(exitbt4);
+		// exitbt4.addActionListener(this);
+ 
+}
+	 
+
+				}
+		 
+		 
+
+		 
+

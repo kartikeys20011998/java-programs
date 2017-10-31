@@ -1,0 +1,471 @@
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.table.DefaultTableModel;
+
+public class customer1 extends JFrame implements ActionListener,ItemListener {
+
+	public static void main(String[] args) {
+		
+new customer1();
+	
+	}
+	Connection con=null;//interface to conect with data
+	Statement st=null;//interface to execute queries on table
+	ResultSet rs=null;//interface to read data from table
+	
+
+String[] cols={"ID","Cateogory","Beds","Vaccant","PerDayCharges"};
+DefaultTableModel model=new DefaultTableModel(cols,0);
+JTable table=new JTable(model);
+
+String[] cols1={"ID","Cateogory","Beds","Total Rooms","Total Days","Price"};
+DefaultTableModel model1=new DefaultTableModel(cols1,0);
+JTable table1=new JTable(model1);
+
+
+int charges=0,id=0,vaccant=0;
+String troom="";
+String tbed="";
+
+
+//// table 2
+int id1=0;
+String troom1="";
+String tbed1="";
+int tr=0,td=0,price=0;
+double tot=0;
+///////
+int idd=0;
+String name="";
+String address="";
+String custmid="";
+long mob=0;
+int mem=0,male=0,female=0,kids=0,serv=0,totvehi=0;
+String vehino="";
+int adv=0,cost=0;
+
+
+
+
+	 
+	JLabel lb=new JLabel("CUSTOMER FORM");
+	JLabel lb1=new JLabel("Available Rooms");
+	JLabel lb2=new JLabel("Select Total Rooms");
+	JLabel lb3=new JLabel("Total Days");
+	JLabel lb4=new JLabel("Customer Details");
+    JLabel lb5=new JLabel("Customer Name");
+    JLabel lb6=new JLabel("Address");
+    JLabel lb7=new JLabel("Id");
+    JLabel lb8=new JLabel("Mobile No.");
+    JLabel lb9=new JLabel("Total Members");
+    JLabel lb10=new JLabel("Total No. of Males");
+    JLabel lb11=new JLabel("Total No. of Females");
+    JLabel lb12=new JLabel("Kids");
+    JLabel lb13=new JLabel("Any Servant");
+    JLabel lb14=new JLabel("Total Vehicle");
+    JLabel lb15=new JLabel("Vehicle No.");
+    JLabel lb16=new JLabel("COST");
+    JLabel lb17=new JLabel("Advance");
+    JLabel lb18=new JLabel("Date");
+    JLabel lb19=new JLabel("Time");
+    
+    
+    JButton addbt=new JButton("ADD");
+    JButton removebt=new JButton("REMOVE");
+    JButton submitbt=new JButton("SUBMIT");
+    
+    JComboBox combotr=new JComboBox();
+    JComboBox combotd=new JComboBox();
+    
+
+	JTextField t5=new JTextField();
+	JTextField t6=new JTextField();
+	JTextField t7=new JTextField();
+	JTextField t8=new JTextField();
+	JTextField t9=new JTextField();
+	JTextField t10=new JTextField();
+	JTextField t11=new JTextField();
+	JTextField t12=new JTextField();
+	JTextField t13=new JTextField();
+	JTextField t14=new JTextField();
+	JTextField t15=new JTextField();
+	JTextField t16=new JTextField();
+	JTextField t17=new JTextField();
+	JTextField t18=new JTextField();
+	JTextField t19=new JTextField();
+  
+	void openConnection()
+	{
+		try{
+			Class.forName("com.mysql.jdbc.Driver");
+			con=DriverManager.getConnection("jdbc:mysql://localhost:3306/hmanage","root","");
+			}
+			catch (ClassNotFoundException e){
+				System.out.println("Invalid Driver" +e.getMessage());
+				System.exit(0);
+				
+			}
+			catch (SQLException e){
+				System.out.println("Invalid Dsn" +e.getMessage());
+				System.exit(0);
+				
+				
+			}	
+	}
+	void closeConnection()
+	{
+		try{
+			con.close();
+			}
+			catch(SQLException e){
+				}
+	}
+	
+    
+    public customer1()
+    {
+    	
+    	setSize(1200,700);
+    	setLocation(10,10);
+    	setLayout(null);
+    	
+    	lb.setBounds(550,20,150,40);
+    	lb1.setBounds(40,60,100,20);
+    	lb2.setBounds(540,100,150,20);
+        combotr.setBounds(540,120,120,20);
+    	lb3.setBounds(540,150,150,20);
+    	combotd.setBounds(540,170,120,20);
+    	addbt.setBounds(540, 210, 120, 20);
+    	removebt.setBounds(540, 250, 120, 20);
+    	lb4.setBounds(40,380,120,50);
+    	lb5.setBounds(50,420,120,20);
+    	t5.setBounds(180,420,200,20);
+    	lb6.setBounds(50,450,120,20);
+    	t6.setBounds(180,450,200,20);
+    	lb7.setBounds(50,480,120,20);
+    	t7.setBounds(180,480,200,20);
+     	lb8.setBounds(50,510,120,20);
+    	t8.setBounds(180,510,200,20);
+    	lb9.setBounds(50,540,120,20);
+    	t9.setBounds(180,540,200,20);
+    	lb10.setBounds(50,570,120,20);
+    	t10.setBounds(180,570,200,20);
+    	lb11.setBounds(50,600,120,20);
+    	t11.setBounds(180,600,200,20);
+    	lb12.setBounds(50,630,120,20);
+    	t12.setBounds(180,630,200,20);
+    	lb13.setBounds(430,420,120,20);
+    	t13.setBounds(530,420,200,20);
+    	lb14.setBounds(430,450,120,20);
+    	t14.setBounds(530,450,200,20);
+    	lb15.setBounds(430,480,120,20);
+    	t15.setBounds(530,480,200,20);
+    	lb16.setBounds(830,480,120,20);
+    	t16.setBounds(880,480,200,20);
+    	lb17.setBounds(830,540,120,20);
+    	t17.setBounds(880,540,200,20);
+    	lb18.setBounds(430,570,120,20);
+    	t18.setBounds(530,570,200,20);
+    	lb19.setBounds(430,600,120,20);
+    	t19.setBounds(530,600,200,20);
+    	submitbt.setBounds(880,600,120,20);
+    	
+    	for(int i=1;i<=31;i++)
+			combotd.addItem(""+i);
+    	for(int i=1;i<=20;i++)
+			combotr.addItem(""+i);
+    	
+
+    	
+    	
+       add(lb);
+       add(lb1);
+       add(lb2);
+       add(combotr);
+       add(lb3);
+       add(combotd);
+       add(addbt);
+       add(removebt);
+       add(lb4);
+       add(lb5);
+       add(t5);
+       add(lb6);
+       add(t6);
+       add(lb7);
+       add(t7);
+       add(lb8);
+       add(t8);
+       add(lb9);
+       add(t9);
+       add(lb10);
+       add(t10);
+       add(lb11);
+       add(t11);
+       add(lb12);
+       add(t12);
+       add(lb13);
+       add(t13);
+       add(lb14);
+       add(t14);
+       add(lb15);
+       add(t15);
+       add(lb16);
+       add(t16);
+       add(lb17);
+       add(t17);
+       add(lb18);
+       add(t18);
+       add(lb19);
+       add(t19);
+       add(submitbt);
+       setVisible(true);
+       
+   	addbt.addActionListener(this);
+	removebt.addActionListener(this);
+	submitbt.addActionListener(this);
+       
+       
+       JScrollPane scrollPane=new JScrollPane(table);
+		 scrollPane.setBounds(5,100,500,280);
+		// scrollPane.setBackground(Color.CYAN);
+		 scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		 scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+		add(scrollPane);
+		
+	       JScrollPane scrollPane1=new JScrollPane(table1);
+			 scrollPane1.setBounds(680,100,500,280);
+			// scrollPane.setBackground(Color.CYAN);
+			 scrollPane1.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+			 scrollPane1.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+			add(scrollPane1);
+		
+		////
+	
+		
+		try
+ 		{
+ 			openConnection();
+ 			st=con.createStatement();
+ 			rs=st.executeQuery("select * from room");
+ 		
+ 			if(rs.next())
+ 			{
+ 				do
+ 				{
+ 					id=rs.getInt("id");
+ 					troom=rs.getString("catofroom");
+ 					tbed=rs.getString("bed");
+ 					vaccant=rs.getInt("totalrooms")-rs.getInt("occupied");
+ 					
+ 					charges=rs.getInt("charges");
+if(vaccant!=0)
+{
+ 					Object[] row={id,troom,tbed,vaccant,charges};
+ 					model.addRow(row);
+}			
+ 				}while(rs.next());
+ 			}
+ 			closeConnection();
+ 		}
+ 		catch(Exception ee)
+ 		{
+ 	}
+ 		
+		
+ 	
+    }
+
+public void actionPerformed(ActionEvent e){
+		
+	 if(e.getActionCommand().equals("ADD"))
+		{
+		 int c=table.getSelectedRow();
+		// String[] cols={"ID","Cateogory","Beds","Vaccant","PerDayCharges"};
+		 Object idt=model.getValueAt(c, 0);
+		 Object catt=model.getValueAt(c, 1);
+		 Object bedt=model.getValueAt(c, 2);
+		 Object perdayt=model.getValueAt(c, 4);
+		// Object catt=model.getValueAt(c, 1);
+		 
+		 int id=(Integer)idt;
+		 String cat=(String)catt;
+		 String bed=(String)bedt;
+		 int perday=(Integer)perdayt;
+		 int day=Integer.parseInt(combotd.getSelectedItem().toString().trim());
+		 int room=Integer.parseInt(combotr.getSelectedItem().toString().trim());
+		 double amt=perday*day*room;
+		 tot=tot+amt;
+		 t16.setText(""+tot);
+	//	 String[] cols1={"ID","Cateogory","Beds","Total Rooms","Total Days","Price"};
+		 Object row[]={id,cat,bed,room,day,amt};
+		 model1.addRow(row);
+		// System.out.println(cat+id);
+		int f=1; 
+		try{
+		 
+		}
+		catch(Exception ee)
+		{
+			f=0;
+			System.out.println("Entered data is not appropriate"+ee.getMessage());
+		}
+		f=0;
+		if(f==1)
+		{
+			System.out.println(troom+"  "+tbed);
+		
+			try
+			{
+				openConnection();
+			st=con.createStatement();
+			String qry="insert into customer values(0,'"+troom+"','"+tbed+"',"+tr+",0,"+charges+")";
+			//System.out.print(qry);//to print qry on screen
+			st.executeUpdate(qry); //for insert,update,delete
+			System.out.println(troom+"  "+tbed);
+			closeConnection();
+			}
+			catch(Exception ee)
+			{
+				System.out.println("Entered data is not appropriate"+ee.getMessage());
+			}
+		}
+		}
+
+
+if(e.getActionCommand().equals("REMOVE"))
+{
+	 int c=table1.getSelectedRow();
+	 
+			model1.removeRow(c);
+	
+}
+
+if(e.getActionCommand().equals("SUBMIT"))
+{
+/*
+ int idd=0;
+String name="";
+String address="";
+String custmid="";
+int mob=0;
+int mem=0,male=0,female=0,kids=0,serv=0,totvehi=0,vehino=0,adv=0,cost=0;	
+ */
+
+	
+		int f=1; 
+		try{	
+			
+			name=(t5.getText().toUpperCase().trim());
+			address=(t6.getText().toUpperCase().trim());
+			custmid=(t7.getText().toUpperCase().trim());		
+			 mob=Long.parseLong(t8.getText().trim());
+			 mem=Integer.parseInt(t9.getText().trim());
+			 male=Integer.parseInt(t10.getText().trim());
+			 female=Integer.parseInt(t11.getText().trim());
+			 kids=Integer.parseInt(t12.getText().trim());
+			 serv=Integer.parseInt(t13.getText().trim());
+			 totvehi=Integer.parseInt(t14.getText().trim());
+			 vehino=t15.getText().trim();
+			 cost=Integer.parseInt(t16.getText().trim());
+			 adv=Integer.parseInt(t17.getText().trim());
+		}
+			 catch(Exception ee)
+				{
+					f=0;
+					System.out.println("Entered data is not appropriate"+ee.getMessage());
+				}
+		if(mem!=(male+female+kids+serv))
+		{
+			f=0;
+			System.out.println("total members must be equal with male etc.");
+			
+		}
+		if(adv<cost)
+		{
+			f=0;
+			System.out.println("advance must be greater or equals with total cost");
+			
+		}
+				if(f==1)
+				{
+					try
+					{
+						openConnection();
+					st=con.createStatement();
+					int c=model1.getRowCount();
+					for(int i=0;i<c;i++)
+					{
+						int rid=Integer.parseInt(model1.getValueAt(i, 0).toString().trim());
+						String cat=model1.getValueAt(i, 1).toString().trim();
+						String bed=model1.getValueAt(i, 2).toString().trim();
+						int rid=Integer.parseInt(model1.getValueAt(i, 0).toString().trim());
+						int rid=Integer.parseInt(model1.getValueAt(i, 0).toString().trim());
+						
+					}
+					String qry="insert into details values(0,'"+name+"','"+address+"','"+custmid+"',"+mob+","+mem+","+male+","+female+","+kids+","+serv+","+totvehi+","+vehino+","+cost+","+adv+")";
+					//System.out.print(qry);//to print qry on screen
+					st.executeUpdate(qry); //for insert,update,delete
+				
+					closeConnection();
+					}
+					catch(Exception ee)
+					{
+						System.out.println("Entered data is not appropriate"+ee.getMessage());
+					}
+			
+				}
+}
+}
+
+			public void itemStateChanged(ItemEvent ie){
+				
+			}
+}
+
+/*
+CREATE TABLE `details` (
+`idd` INT NOT NULL AUTO_INCREMENT,
+	PRIMARY KEY (`idd`);
+	`name` VARCHAR(25) NOT NULL,
+	`address` VARCHAR(50) NOT NULL,
+	`id` VARCHAR(20) NOT NULL,
+	`mobileno` BIGINT(10) NOT NULL,
+	`totalmember` INT(2) NOT NULL,
+	`totalmale` INT(2) NOT NULL,
+	`totalfemale` INT(2) NOT NULL,
+	`kids` INT(2) NOT NULL,
+	`servant` INT(2) NOT NULL,
+	`totalvehicle` INT(2) NOT NULL,
+	`vehicleno` VARCHAR(20) NOT NULL,
+	`indate` DATE NOT NULL,
+	`outdate` DATE NOT NULL,
+	`roomid` INT(2) NOT NULL,
+	`cat` VARCHAR(20) NOT NULL,
+	`beds` VARCHAR(15) NOT NULL,
+	`totalroom` INT(2) NOT NULL,
+	`totaldays` INT(2) NOT NULL,
+	`roomcost` DOUBLE(10,2) NOT NULL,
+	`totalcost` DOUBLE(10,2) NOT NULL,
+	`advance` DOUBLE(10,2) NOT NULL
+)
+
+
+
+
+*/

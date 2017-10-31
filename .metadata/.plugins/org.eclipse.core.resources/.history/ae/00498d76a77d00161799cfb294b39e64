@@ -1,0 +1,174 @@
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+public class Main_Form extends JFrame implements ActionListener{
+public static Main_Form myselfMain_Form=null;
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+Main_Form.myselfMain_Form=new Main_Form();
+	}
+	Connection con=null;//interface to conect with data
+	Statement st=null;//interface to execute queries on table
+	ResultSet rs=null;//interface to read data from table
+	
+	void openConnection()
+	{
+		try{
+			Class.forName("com.mysql.jdbc.Driver");
+			con=DriverManager.getConnection("jdbc:mysql://localhost:3306/hmanage","root","");
+			}
+			catch (ClassNotFoundException e){
+				System.out.println("Invalid Driver" +e.getMessage());
+				System.exit(0);
+				
+			}
+			catch (SQLException e){
+				System.out.println("Invalid Dsn" +e.getMessage());
+				System.exit(0);
+				
+				
+			}	
+	}
+	void closeConnection()
+	{
+		try{
+			con.close();
+			}
+			catch(SQLException e){
+				}
+	}
+	JLabel lb1=new JLabel("User Id");
+	JLabel lb2=new JLabel("Password");
+	JLabel lb3=new JLabel("Designation");
+	
+	JTextField t1=new JTextField();
+//	JTextField t2=new JTextField();
+	JPasswordField t2=new JPasswordField();
+	JTextField t3=new JTextField();
+	
+	JButton okbt=new JButton("OK");
+	JButton exitbt=new JButton("EXIT");
+	
+	 public Main_Form()
+	    {
+	    	
+	    	setSize(500,300);
+	    	setLocation(10,10);
+	    	setLayout(null);
+
+	    	lb1.setBounds(20,20,100,20);
+	    	lb2.setBounds(20,60,100,20);
+	    	lb3.setBounds(20,100,100,20);
+	    	t1.setBounds(140,20,100,20);
+	    	t2.setBounds(140,60,100,20);
+	    	t3.setBounds(140,100,100,20);
+	        t2.setEchoChar('*');
+	        t2.addActionListener(this);	
+	    	okbt.setBounds(200,150,100,20);
+	    	exitbt.setBounds(200,200,100,20);
+	    	
+	    	add(lb1);
+	    	add(lb2);
+	    	add(lb3);
+	    	add(t3);
+	    	add(t1);
+	    	add(t2);
+	    	add(okbt);
+	    	add(exitbt);
+	    	 
+	    	okbt.addActionListener(this);
+	    	exitbt.addActionListener(this);
+	    	
+	        setVisible(true);
+	    }
+	 public void actionPerformed(ActionEvent e){
+			
+		 if(e.getActionCommand().equals("EXIT"))
+			{
+			 System.exit(0);
+			}
+		 if(e.getActionCommand().equals("OK"))
+			{
+			 String uid=t1.getText().trim();
+			 char []aa=t2.getPassword();//to collect values in char array
+			 String pw=new String(aa);//to convert into string
+			 String desig=t3.getText().trim();
+			 t1.setText("");
+			 t2.setText("");
+			 t3.setText("");
+			 try
+		    	{
+		    		openConnection();
+		    		st=con.createStatement();
+		    		rs=st.executeQuery("select * from details where status='I'");
+		    		if(rs.next())
+		    		{
+		    			
+		    			do
+		    			{
+		    				
+		    				id1=rs.getInt("custid"); //id is the variable/// n custid is table variable name
+		    				if(id1!=id)
+		    				{
+		    					comboid.addItem(""+id1);
+		    					id=id1;
+		    				}
+		    				
+		    			}while(rs.next());
+		    		}
+		    		closeConnection();
+		    	}
+		    	catch(Exception ee){
+	   }
+			 
+			 if(uid.equals("administrator")&&pw.equals("admin"))
+			 {
+				 if(roomdir.myselfroomdir==null)
+				 {
+					 roomdir.myselfroomdir=new roomdir();
+					 roomdir.myselfroomdir.setVisible(true);
+					 Main_Form.myselfMain_Form.setVisible(false);
+				 }
+				 else
+				 {
+					 roomdir.myselfroomdir.setVisible(true);
+					 Main_Form.myselfMain_Form.setVisible(false); 
+				 }
+			 }
+			 else
+				 
+				 if(uid.equals("manager")&&pw.equals("manager"))
+			 {
+				 if(customer1.myselfcustomer1==null)
+				 {
+					 customer1.myselfcustomer1=new customer1();
+					 customer1.myselfcustomer1.setVisible(true);
+					 Main_Form.myselfMain_Form.setVisible(false);
+				 }
+				 else
+				 {
+					 customer1.myselfcustomer1.setVisible(true);
+					 Main_Form.myselfMain_Form.setVisible(false); 
+				 }
+				 
+			 } 
+			 
+			 
+			// System.exit(0);
+			}
+	 }
+
+}

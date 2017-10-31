@@ -1,0 +1,409 @@
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Date;
+
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.table.DefaultTableModel;
+
+	public class checkout extends JFrame implements ActionListener,ItemListener {
+		public static void main(String[] args) {
+			new checkout();
+
+	}
+		Connection con=null;//interface to conect with data
+		Statement st=null;//interface to execute queries on table
+		ResultSet rs=null;//interface to read data from table
+		
+		String[] cols={"ID","NAME","ADD","IDG","MOB","MEM","MALE","FEMALE","KIDS","SERV","VEH","VEHINO","INDATE","OUTDATE","RID","CAT","BED","TR","TD","PRICE","COST","ADV","RETURN","EXT.CHG."};
+		
+		DefaultTableModel model=new DefaultTableModel(cols,0);
+		JTable table=new JTable(model);
+		 int custid=0;int id=0,id1=0;
+		 
+		 
+		 int idd=0;
+		 String name="";
+		 String address="";
+		 String custmid="";
+		 long mob=0;
+		 int mem=0,male=0,female=0,kids=0,serv=0,totvehi=0;
+		 String vehino=""; String indate="";
+		 String outdate="";
+		 double adv=0,cost=0;
+		 double retrn=0,extrachr=0;
+
+
+		 int rid=0;
+		 String rcat="";
+		 String rbed="";
+		 int troom2=0;
+		 int tday=0;
+		 double price2=0;
+		
+		 
+		JLabel lb=new JLabel("CHECK OUT FORM");
+		JLabel lb1=new JLabel("Select Id:");
+		
+		   JComboBox comboid=new JComboBox();
+		   JButton showbt=new JButton("SHOW DETAILS");
+		   JButton submitbt=new JButton("SUBMIT");
+		  
+			void openConnection()
+			{
+				try{
+					Class.forName("com.mysql.jdbc.Driver");
+					con=DriverManager.getConnection("jdbc:mysql://localhost:3306/hmanage","root","");
+					}
+					catch (ClassNotFoundException e){
+						System.out.println("Invalid Driver" +e.getMessage());
+						System.exit(0);
+						
+					}
+					catch (SQLException e){
+						System.out.println("Invalid Dsn" +e.getMessage());
+						System.exit(0);
+						
+						
+					}	
+			}
+			void closeConnection()
+			{
+				try{
+					con.close();
+					}
+					catch(SQLException e){
+						}
+			}
+		    public checkout()
+		    {
+		    	
+		    	setSize(1200,700);
+		    	setLocation(10,10);
+		    	setLayout(null);
+		    	
+		    	lb.setBounds(550,20,150,40);
+		    	lb1.setBounds(40,60,100,20);
+		    	comboid.setBounds(160,60,100,20);
+		    	showbt.setBounds(280,60,150,20);
+		    	submitbt.setBounds(680,480,150,20);
+		    	
+		    	 add(lb);
+			     add(lb1);
+			     add(comboid);
+			     add(showbt);
+				 add(submitbt);
+				 setVisible(true);
+				   
+					showbt.addActionListener(this);
+				   submitbt.addActionListener(this);
+				    JScrollPane scrollPane=new JScrollPane(table);
+					scrollPane.setBounds(5,100,1200,280);
+				    scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+				    scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+					add(scrollPane);
+					table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+				
+				
+				  try
+			    	{
+			    		openConnection();
+			    		st=con.createStatement();
+			    		rs=st.executeQuery("select * from details where status='I'");
+			    		if(rs.next())
+			    		{
+			    			
+			    			do
+			    			{
+			    				
+			    				id1=rs.getInt("custid"); //id is the variable/// n custid is table variable name
+			    				if(id1!=id)
+			    				{
+			    					comboid.addItem(""+id1);
+			    					id=id1;
+			    				}
+			    				
+			    			}while(rs.next());
+			    		}
+			    		closeConnection();
+			    	}
+			    	catch(Exception ee){
+		   }
+			 
+				  this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				
+		    }
+	 
+		    public void actionPerformed(ActionEvent e){
+		    	 if(e.getActionCommand().equals("SUBMIT"))
+			   		{ 
+		    		 double tc=0;
+		    		 double ad=0;
+		    		 double rt=0;
+		    		 double ex=0;
+		    		 
+		    		 Date dd=new Date();
+			   		 String dd1=dd.toString();
+		    		 int rec=0;
+		    		 
+		    		 FileWriter fw=null;
+		    			BufferedWriter bw=null;
+		    			int idd=Integer.parseInt(comboid.getSelectedItem().toString().trim());
+		    			try
+		    			{
+		    				openConnection();
+		    				st=con.createStatement();
+		    				rs=st.executeQuery("select * from details order by recno desc limit 1");
+		    				if(rs.next())
+		    				{
+		    				rec=rs.getInt("recno");
+		    				rec++;
+		    				}
+		    				else
+		    				{
+		    					rec=1;
+		    				}
+		    				st=null;
+		    				rs=null;
+		    				closeConnection();
+		    				}
+		    			
+		    			catch(Exception ee)
+		    			{
+		    				
+		    			}
+		    			try
+		   			 {
+		   			 		 fw=new FileWriter("bill.txt",false);
+		   			 		 bw=new BufferedWriter(fw);
+		   			 	 bw.write(                         "*************BILL************** ");
+	   			 		 bw.newLine();
+	   			 	 bw.newLine();
+	   			 
+		   			 		 bw.write(  String.format("%4s","Hotel Castle View "));
+		   			 		 bw.newLine();
+		   			 	 bw.write(                               "Ramnagar Chowk ");
+	   			 		 bw.newLine();
+	   			 	 bw.write(                                      "Roorkee ");
+   			 		 bw.newLine();
+   			 	 bw.newLine();
+   			 		 bw.write("Rec. No.:"+rec+" Date:"+dd1);
+   			 		 bw.newLine();
+   			 	 bw.newLine();
+   			 		 
+		   			 //		bw.write(String.format("%4s %-2s %-15s %-20s %4s %4s %12s %n","ID","  ","Cat.Of Room","Type Of Bed","Tot.","Occ.","Rate"));
+		   			// 		bw.write(String.format("%70s %n","__" +
+		   			 }
+		    			catch(Exception ee)
+		    			{
+		    				
+		    			}
+		    			try
+		    			{
+		    			openConnection();
+		    			st=con.createStatement();
+		    			rs=st.executeQuery("select * from details where custid="+idd+"");
+		    			if(rs.next())
+		    			{
+		    			bw.write("Name Of Customer :"+rs.getString("name"));
+		    			bw.newLine();
+		    			bw.newLine();
+		    			bw.write("Address          :"+rs.getString("address"));
+		    			bw.newLine();
+		    			bw.newLine();
+		    			bw.write("Mobile No.       :"+rs.getLong("mobileno"));
+		    			bw.newLine();
+		    			bw.newLine();
+		    			bw.write("Total Persons    :"+rs.getInt("totalmember"));
+		    			bw.newLine();
+		    			bw.newLine();
+		    			bw.write("Customer Hotel ID:"+idd);
+		    			bw.newLine();
+		    			bw.newLine();
+		    			bw.write("CheckIn Date     :"+rs.getString("indate"));
+		    			bw.newLine();
+		    			bw.newLine();
+		    			bw.write("CheckOut Date    :"+dd1);
+		    			bw.newLine();
+		    			bw.newLine();
+		    			bw.write(String.format("%2s %-20s %-15s %2s %2s %10s %10s %n", "R.ID","Cat.","Bed","T.R.","T.D.","Rent/Day","ToT"));
+		    			
+		    			do
+		    			{
+		    				tc=rs.getDouble("totalcost");
+		    				ad=rs.getDouble("advance");
+		    				rt=rs.getDouble("returnm");
+		    				ex=rs.getDouble("extchg");
+		    				if(tc==0)
+		    				{
+		    				int tr=rs.getInt("totalroom");
+		    				int td=rs.getInt("totaldays");
+		    				double costt=rs.getDouble("totalcost");
+				    		bw.write(String.format("%2s %-20s %-15s %2s %2s %10s %10s %n",rs.getInt("roomid"),rs.getString("cat"),rs.getString("beds"),tr,td,(costt/tr*td),costt));	
+				    		bw.newLine();
+			    			bw.newLine();
+		    				}
+		    				else
+		    				{
+		    					bw.write("Total Cost Rs    :"+tc);
+				    			bw.newLine();
+				    			bw.newLine();
+				    			bw.write("Total Advance Rs :"+ad);
+				    			bw.newLine();
+				    			bw.newLine();
+				    			if(ad>tc)
+				    			{
+				    				rt=ad-tc;
+				    				bw.write("Total Return Rs :"+rt);
+					    			bw.newLine();
+					    			bw.newLine();
+				    			}
+				    			else
+				    				if(tc>ad)
+					    			{
+				    					ex=tc-ad;
+					    				bw.write("Total Ext.Chg. Rs :"+ex);
+						    			bw.newLine();
+						    			bw.newLine();
+					    			}
+				    				else
+				    				{
+				    					bw.write("****All Clear****");
+						    			bw.newLine();
+				    				}
+				    				}
+		    				
+		    				}while(rs.next());
+		    			}
+		    			bw.write(String.format("%70s %n","____________________________________________________________________"));
+			 			 
+		    			bw.write(                 "*************Thanks For Visiting************");
+		    			bw.newLine();
+		    			
+		    			closeConnection();
+		    			rs=null;
+		    			st=null;
+		    			bw.close();
+		    			fw.close();
+		    			ProcessBuilder pb=new ProcessBuilder("Notepad.exe","bill.txt");
+		    			pb.start();
+		    			}
+		    			catch(Exception ee)
+		    			{
+		    				
+		    			}
+		    			try
+		    			{
+		    			openConnection();
+		    			st=con.createStatement();
+		    			st.executeUpdate("update details set status='O',recno="+rec+" where custid="+idd+"");
+		    			st.executeUpdate("update details set returnm="+rt+",extchg="+ex+" where custid="+idd+" and totalcost>0");
+		    			closeConnection();
+		    			st=null;
+		    			}
+		    			
+		    			catch(Exception ee)
+		    			{
+		    				
+		    			}
+		    			
+		    			
+			   		}
+				
+		   	 if(e.getActionCommand().equals("SHOW DETAILS"))
+		   		{
+		   		 Date dd=new Date();
+		   		 String dd1=dd.toString();
+		   		int a=table.getRowCount();
+	 			for(int i=0;i<a;i++)
+	 			{
+	 				model.removeRow(0);
+	 			}
+		   	
+		   		 id=Integer.parseInt(comboid.getSelectedItem().toString().trim());
+		   		 System.out.println("mmm"+id);
+		   		try
+		 		{
+		 			openConnection();
+		 			st=con.createStatement();
+		 			rs=st.executeQuery("select * from details where custid="+id+"");
+		 			 System.out.println(""+id);
+		 			if(rs.next())
+		 			{
+	 				do
+		 				{
+		 					idd=rs.getInt("custid");
+		 					name=rs.getString("name");
+		 					address=rs.getString("address");
+		 					custmid=rs.getString("id");
+		 					mob=rs.getLong("mobileno");
+		 					mem=rs.getInt("totalmember");
+		 					male=rs.getInt("totalmale");
+		 					female=rs.getInt("totalfemale");
+		 					kids=rs.getInt("kids");
+		 					serv=rs.getInt("servant");
+		 					totvehi=rs.getInt("totalvehicle");
+		 					vehino=rs.getString("vehicleno");
+		 					indate=rs.getString("indate");
+		 					//outdate=rs.getString("outdate");
+		 					outdate=dd1;
+		 					rid=rs.getInt("roomid");
+		 					rcat=rs.getString("cat");
+		 					rbed=rs.getString("beds");
+		 					troom2=rs.getInt("totalroom");
+		 					tday=rs.getInt("totaldays");
+		 					price2=rs.getInt("roomcost");
+
+		 					cost=rs.getInt("totalcost");
+		 					adv=rs.getInt("advance");
+		 					extrachr=rs.getInt("extchg");	
+		 					retrn=rs.getInt("returnm");
+		 					
+		 					
+		 					if(cost>adv)
+		 					{
+		 						extrachr=cost-adv;
+		 					}
+		 					else 
+		 						if(adv>cost)
+		 						{
+		 							retrn=adv-cost;
+		 						}
+			 					Object[] row={idd,name,address,custmid,mob,mem,male,female,kids,serv,totvehi,vehino,indate,outdate,rid,rcat,rbed,troom2,tday,price2,cost,adv,retrn,extrachr};
+		 					model.addRow(row);
+				
+		 				}while(rs.next());
+		 			}
+		 		
+		 			closeConnection();
+		 		}
+		 		catch(Exception ee)
+		 		{
+		 			 System.out.println("mmm"+ee.getMessage());
+		 		}
+		 	}
+		    }
+		   		public void itemStateChanged(ItemEvent ie){
+		   			repaint();
+					
+				}
+		}		
+			 		
+
+
+	
+	

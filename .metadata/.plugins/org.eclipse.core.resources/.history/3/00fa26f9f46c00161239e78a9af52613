@@ -1,0 +1,191 @@
+import java.awt.event.ActionListener;
+import java.awt.event.ItemListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.table.DefaultTableModel;
+
+
+
+
+	public class checkout extends JFrame  {
+		public static void main(String[] args) {
+			new checkout();
+
+	}
+		Connection con=null;//interface to conect with data
+		Statement st=null;//interface to execute queries on table
+		ResultSet rs=null;//interface to read data from table
+		
+		String[] cols={"ID","NAME","ADD","IDG","MOB","MEM","MALE","FEMALE","KIDS","SERV","VEH","VEHINO","INDATE","OUTDATE","RID","CAT","BED","TR","TD","PRICE","COST","ADV"};
+		DefaultTableModel model=new DefaultTableModel(cols,0);
+		JTable table=new JTable(model);
+		 int custid=0;int id;
+		 
+		 
+		 int idd=0;
+		 String name="";
+		 String address="";
+		 String custmid="";
+		 long mob=0;
+		 int mem=0,male=0,female=0,kids=0,serv=0,totvehi=0;
+		 String vehino="";
+		 double adv=0,cost=0;
+
+
+		 int rid=0;
+		 String rcat="";
+		 String rbed="";
+		 int troom2=0;
+		 int tday=0;
+		 double price2=0;
+		
+		 
+		JLabel lb=new JLabel("CHECK OUT FORM");
+		JLabel lb1=new JLabel("Select Id:");
+		
+		
+		
+		
+		
+		   JComboBox comboid=new JComboBox();
+		  
+		   
+			void openConnection()
+			{
+				try{
+					Class.forName("com.mysql.jdbc.Driver");
+					con=DriverManager.getConnection("jdbc:mysql://localhost:3306/hmanage","root","");
+					}
+					catch (ClassNotFoundException e){
+						System.out.println("Invalid Driver" +e.getMessage());
+						System.exit(0);
+						
+					}
+					catch (SQLException e){
+						System.out.println("Invalid Dsn" +e.getMessage());
+						System.exit(0);
+						
+						
+					}	
+			}
+			void closeConnection()
+			{
+				try{
+					con.close();
+					}
+					catch(SQLException e){
+						}
+			}
+		    public checkout()
+		    {
+		    	
+		    	setSize(1200,700);
+		    	setLocation(10,10);
+		    	setLayout(null);
+		    	
+		    	lb.setBounds(550,20,150,40);
+		    	lb1.setBounds(40,60,100,20);
+		    	comboid.setBounds(160,60,100,20);
+		    	
+		    	 add(lb);
+			       add(lb1);
+			       add(comboid);
+				   
+				   setVisible(true);
+				   
+				   JScrollPane scrollPane=new JScrollPane(table);
+					 scrollPane.setBounds(5,100,700,280);
+				
+					 scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+					 scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+					add(scrollPane);
+					
+					try
+			 		{
+			 			openConnection();
+			 			st=con.createStatement();
+			 			rs=st.executeQuery("select * from room");
+			 		
+			 			if(rs.next())
+			 			{
+			 				/*
+			 				 * 	 int idd=0;
+		 String name="";
+		 String address="";
+		 String custmid="";
+		 long mob=0;
+		 int mem=0,male=0,female=0,kids=0,serv=0,totvehi=0;
+		 String vehino="";
+		 double adv=0,cost=0; int rid=0;
+		 String rcat="";
+		 String rbed="";
+		 int troom2=0;
+		 int tday=0;
+		 double price2=0;
+			 				 */
+			 				
+			 				
+			 				do
+			 				{
+			 					idd=rs.getInt("custid");
+			 					name=rs.getString("name");
+			 					address=rs.getString("address");
+			 					custmid=rs.getString("id");
+			 					mob=rs.getInt("mobileno");
+			 					mem=rs.getInt("totalmember");
+			 					male=rs.getInt("totalmale");
+			 					female=rs.getInt("totalfemale");
+			 					kids=rs.getInt("kids");
+			 					serv=rs.getInt("servant");
+			 				
+			 					
+			 					charges=rs.getInt("charges");
+			if(vaccant!=0)
+			{
+			 					Object[] row={id,troom,tbed,vaccant,charges};
+			 					model.addRow(row);
+			}			
+			 				}while(rs.next());
+			 			}
+			 			closeConnection();
+			 		}
+			 		catch(Exception ee)
+			 		{
+			 	}
+			 		
+				   
+				   
+				  try
+			    	{
+			    		openConnection();
+			    		st=con.createStatement();
+			    		rs=st.executeQuery("select * from details");
+			    		if(rs.next())
+			    		{
+			    			do
+			    			{
+			    				
+			    				id=rs.getInt("custid"); //id is the variable/// n custid is table variable name
+			    				comboid.addItem(""+id);
+			    			}while(rs.next());
+			    		}
+			    		closeConnection();
+			    	}
+			    	catch(Exception ee){
+		   }
+			 this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				
+				
+		 }
+
+}

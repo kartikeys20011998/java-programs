@@ -1,0 +1,18 @@
+name	dob	id	sex	salary
+
+           RAM KUMAR            1 1990-08-09        M      12345.0 
+     SD ASD ASDAS DA            2 1990-07-07        F       2222.0 
+                 sss            3 1990-01-01   FEMALE      12345.0 
+                 WQE            4 1951-02-02   FEMALE        111.0 
+        KRITI SHARMA            5 1959-04-30   FEMALE        222.0 
+                 EMI            6 1953-03-04   FEMALE        234.0 
+                 EMI            7 1953-03-04   FEMALE        234.0 
+                 sss            8 1990-01-01   FEMALE      12345.0 
+            AWDQWEQW            9 1955-04-04   FEMALE       3333.0 
+                 sss           12 1990-01-01   FEMALE      12345.0 
+            AWDQWEQW           13 1955-04-04   FEMALE       3333.0 
+        MONICA SAINI           14 1954-03-01     MALE          3.0 
+        KAVYA SHARMA           15 2004-09-09     MALE     234455.0 
+        KAVYA SHARMA           16 2004-09-09     MALE      2.34455 
+        SEEMA SHARMA           17 1952-03-06   FEMALE     235789.0 
+       BHARAT SHARMA           18 1995-04-20     MALE     232436.0 

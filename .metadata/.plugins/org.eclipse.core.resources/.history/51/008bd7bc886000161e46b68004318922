@@ -1,0 +1,411 @@
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTable;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.table.DefaultTableModel;
+
+public class roomdir extends JFrame //implements ActionListener,ItemListener//  
+{
+	//FileWriter fw=null;
+	//BufferedWriter bw=null;
+	
+	public static void main(String[] args) {
+		new roomdir();
+	}
+	Connection con=null;//interface to conect with data
+	Statement st=null;//interface to execute queries on table
+	//ResultSet rs=null;//interface to read data from table
+	String txt=null;
+	////////////////
+
+String[] cols={"name","dob","id","sex","salary"};
+DefaultTableModel model=new DefaultTableModel(cols,0);
+JTable table=new JTable(model);
+String name="";
+String dob="";
+int id=0;
+String sex="";
+int d=1,m=1,y=1950;
+double salary=0;
+
+/////
+
+	
+	private JTabbedPane tabbedPane;
+	private JPanel panel1;
+	private JPanel panel2;
+	private JPanel panel3;
+	private JPanel panel4;
+	 
+	
+	 JButton exitbt3=new JButton("Exit_3");
+	 JButton exitbt4=new JButton("Exit_4");
+	 
+	JLabel lb1=new JLabel(" NEW ENTRY FORM");
+	JLabel lb2=new JLabel("Select the type of room:");
+	JLabel lb3=new JLabel("Select the Beds needed:");
+	JLabel lb4=new JLabel("Total number of room available:");
+	JLabel lb5=new JLabel("Per day charges:");
+	/////
+	JLabel lb6=new JLabel("EDIT FORM");
+	JLabel lb7=new JLabel("Select any room to Edit");
+	
+	JTextField t1=new JTextField();//for writing any text in the labels
+	JTextField t2=new JTextField();
+	JComboBox comboroom=new JComboBox();
+	JComboBox combobed=new JComboBox();
+
+	
+	ButtonGroup group =new ButtonGroup();
+	JButton addbt=new JButton("ADD");
+	JButton backbt=new JButton("BACK");
+	////
+	JButton showdetailsbt=new JButton("Show Details");
+	JButton showallbt=new JButton("Show All");
+	JButton removeallbt=new JButton("Remaove All");
+	JButton updatebt=new JButton("UPDATE");
+	JTextArea jta=new JTextArea();
+ 
+
+ public roomdir ()
+ 
+ {
+	 setTitle("ROOM DIRECTORY FORM");
+	 setSize(1000,650);
+	 setLocation(50,10);
+	 setBackground(Color.BLUE);
+	 setResizable(false);
+	 //setLayout(null);
+	 JPanel topPanel=new JPanel();//it is outer panel
+	 //in inner panel add all panel with tab captions
+	 topPanel.setLayout(new BorderLayout());
+	 getContentPane().add(topPanel);
+	 createPage1();
+	 createPage2();
+	 createPage3();
+	 createPage4();
+	 tabbedPane=new JTabbedPane();
+	 tabbedPane.addTab("New Entry", panel1);
+	 tabbedPane.addTab("Edit", panel2);
+	 tabbedPane.addTab("Delete", panel3);
+	 tabbedPane.addTab("Listing", panel4);
+	 
+	 //panel1.setVisible(true);
+	//panel2.setVisible(true);
+	//panel3.setVisible(true);
+	//panel4.setVisible(true);
+	 //in the outer panel add inner panel with all sub panels
+	 topPanel.add(tabbedPane,BorderLayout.CENTER);
+	 tabbedPane.setVisible(true);
+	 
+	
+	 
+	 this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	 setVisible(true);
+ }
+ 
+ void openConnection()
+	{
+		try{
+			Class.forName("com.mysql.jdbc.Driver");
+			con=DriverManager.getConnection("jdbc:mysql://localhost:3306/employee","root","");
+			}
+			catch (ClassNotFoundException e){
+				System.out.println("Invalid Driver" +e.getMessage());
+				System.exit(0);
+				
+			}
+			catch (SQLException e){
+				System.out.println("Invalid Dsn" +e.getMessage());
+				System.exit(0);
+				
+				
+			}	
+	}
+	void closeConnection()
+	{
+		try{
+			con.close();
+			}
+			catch(SQLException e){
+				}
+	}
+		
+ 
+ public void createPage1()
+ {
+	 panel1=new JPanel();
+	 panel1.setLayout(null);
+//	 setSize(900,600);
+	//	setLocation(10,10);
+	//	setLayout(null);
+	
+		comboroom.setBounds(250,30,150,20);
+		combobed.setBounds(250,60,150,20);
+		
+		
+	 comboroom.addItem("AC");
+		comboroom.addItem("Non AC");
+		comboroom.addItem("Delux");
+		comboroom.addItem(" Super Delux");
+		comboroom.addItem("V.I.P");
+		combobed.addItem("Single Bed");
+		combobed.addItem("Doble Bed");
+		combobed.addItem("Family Suit");
+		comboroom.setSelectedIndex(0);
+	 
+		
+		lb1.setBounds(390,3,150,30);
+		
+		t1.setBounds(250,90,150,20);
+		lb2.setBounds(30,30,150,20);
+	
+		t2.setBounds(250,120,150,20);
+		lb3.setBounds(30,60,150,20);
+		
+		lb4.setBounds(30,90,200,20);
+		lb5.setBounds(30,120,150,20);
+		
+		
+
+		
+		addbt.setBounds(30,210,150,20);
+		backbt.setBounds(200,210,150,20);
+		
+		panel1.add(addbt);
+		panel1.add(backbt);
+		panel1.add(lb1);
+		panel1.add(lb2);
+		panel1.add(lb3);
+		panel1.add(lb4);
+		panel1.add(lb5);
+		panel1.add(comboroom);
+		panel1.add(combobed);
+		
+		panel1.add(t1);
+		panel1.add(t2);
+		
+		 t1.requestFocus();
+		 //addbt.addActionListener(this);
+		 //backbt.addActionListener(this);
+			
+			
+	
+	
+ }
+ 
+ public void createPage2()
+ {
+	 panel2=new JPanel();
+	 panel2.setLayout(null);
+	 lb6.setBounds(390,3,150,30);
+		lb7.setBounds(30,30,150,40);
+		showdetailsbt.setBounds(600,70,150,20);
+		showallbt.setBounds(600,110,150,20);
+		removeallbt.setBounds(600,150,150,20);
+		updatebt.setBounds(600,190,150,20);
+		
+		
+		
+		
+		panel2.add(showdetailsbt);
+		panel2.add(showallbt);
+		panel2.add(removeallbt);
+		panel2.add(updatebt);
+		panel2.add(lb6);
+		panel2.add(lb7);
+	///
+		
+		//table.setBackground(Color.green);
+//		table.setGridColor(Color.MAGENTA);
+		/*
+		JScrollPane scrollPane=new JScrollPane(table);
+		 scrollPane.setBounds(5,110,300,200);
+		// scrollPane.setBackground(Color.CYAN);
+		 scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		 scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+		add(scrollPane);
+		
+		JScrollPane scrollPane1=new JScrollPane(jta);
+		 scrollPane1.setBounds(310,110,300,200);
+		 scrollPane1.setBackground(Color.CYAN);
+		 scrollPane1.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		 scrollPane1.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+		 jta.setBackground(Color.PINK);
+		 jta.setForeground(Color.BLUE);
+		add(scrollPane1);
+	 */
+ }
+ public void createPage3()
+ {
+	 panel3=new JPanel();
+	 panel3.setLayout(null);
+	 exitbt3.setBounds(10,90,150,20);
+	 panel3.add(exitbt3);
+	 //exitbt3.addActionListener(this);
+ }
+	 
+	 public void createPage4()
+	 {
+		 panel4=new JPanel();
+		 panel4.setLayout(null);
+		 exitbt4.setBounds(10,120,150,20);
+		 panel4.add(exitbt4);
+		// exitbt4.addActionListener(this);
+ 
+}
+	 /*
+	 public void actionPerformed(ActionEvent e)
+	 	
+	 	if(e.getActionCommand().equals("SHOW ALL "))
+	 	{
+	 		try
+	     	{
+	     	 fw=new FileWriter("list.txt");
+	     	 bw=new BufferedWriter(fw);
+	     	}
+	 		catch(Exception ee)
+	 		{
+	 		}
+	     	/*
+	     			bw.write("name"+name);
+	     			bw.newLine();
+	     			bw.write("dob"+dob);
+	     			bw.newLine();
+	     			bw.write("id"+id);
+	     			bw.newLine();
+	     			bw.write("sex"+sex);
+	     			bw.newLine();
+	     			bw.write("salary"+salary);
+	     			bw.newLine();
+	     		
+	  
+	 		int c=table.getRowCount();
+	 		jta.setText("");
+	 		jta.append("S.No"+"\t"+""+"\t"+"id"+"\t"+"sex"+"\t"+"salary"+"\n");
+	 		try
+	 		{
+	 		bw.write("name"+"\t"+"dob"+"\t"+"id"+"\t"+"sex"+"\t"+"salary"+"\n");
+	 		bw.newLine();
+	 		}
+	 		catch(Exception ee)
+	 		{
+	 			
+	 		}
+	 		for(int i=0;i<c;i++)
+	 		{
+	 		model.removeRow(0);
+	 	    }
+	 		try
+	 		{
+	 			openConnection();
+	 			st=con.createStatement();
+	 			rs=st.executeQuery("select * from emp");
+	 			if(rs.next())
+	 			{
+	 				do
+	 				{
+	 					name=rs.getString("S.no");
+	 					id=rs.getInt("Room");
+	 					dob=rs.getDate("").toString();
+	 					sex=rs.getString("sex");
+	 					salary=rs.getDouble("salary");
+	 					Object[] row={name,dob,id,sex,salary};
+	 					model.addRow(row);
+	 					jta.append(name+"\t"+id+"\t"+dob+"\t"+sex+"\t"+salary+"\n");
+	 					bw.write(String.format("%20s %12s %3s %8s %12s %n",name,id,dob,sex,salary));
+	 				
+	 				}while(rs.next());
+	 			}
+	 			closeConnection();
+	 		}
+	 		catch(Exception ee)
+	 		{
+	 	}
+	 		try
+	 		{
+	 			bw.close();
+	 			fw.close();
+	 		}
+	 		catch(Exception ee)
+	 		{
+	 			
+	 		}
+	 	}
+	 		if(e.getActionCommand().equals("REMOVE ALL"))
+	 		{
+	 			int a=table.getRowCount();
+	 			for(int i=0;i<a;i++)
+	 			{
+	 				model.removeRow(0);
+	 			}
+	 			jta.setText("");
+	 		}
+	 			if(e.getActionCommand().equals("SHOW ID"))
+	 			{
+	 				int a=table.getRowCount();
+	 				for(int i=0;i<a;i++)
+	 				{
+	 					model.removeRow(0);
+	 				}
+	 				jta.setText("");
+	 			try
+	 			{	id=Integer.parseInt(comId.getSelectedItem().toString());
+	 				openConnection();
+	 				st=con.createStatement();
+	 				rs=st.executeQuery("select * from emp where id="+id+"");
+	 				if(rs.next())
+	 				{
+	 					
+	 						name=rs.getString("name");
+	 						id=rs.getInt("Id");
+	 						dob=rs.getDate("dob").toString();
+	 						sex=rs.getString("sex");
+	 						salary=rs.getDouble("salary");
+	 						Object[] row={name,dob,id,sex,salary};
+	 						model.addRow(row);
+	 				}
+	 				closeConnection();
+	 			}
+	 			catch(Exception ee)
+	 			{
+	 		
+	 			}
+	 			}
+	 			if(e.getActionCommand().equals("BACK"))
+	 			{
+	 			System.out	
+	 			}
+	 		}
+	 			
+	 		*/
+
+
+				}
+		 
+		 
+
+		 
+

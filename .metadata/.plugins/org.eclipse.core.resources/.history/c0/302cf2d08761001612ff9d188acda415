@@ -1,0 +1,565 @@
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTable;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.table.DefaultTableModel;
+
+public class roomdir extends JFrame implements ActionListener,ItemListener 
+{
+	FileWriter fw=null;
+	BufferedWriter bw=null;
+	
+	public static void main(String[] args) {
+		new roomdir();
+	}
+	Connection con=null;//interface to conect with data
+	Statement st=null;//interface to execute queries on table
+	ResultSet rs=null;//interface to read data from table
+	String txt=null;
+	////////////////
+
+String[] cols={"ID","Cateogory","Beds","TotalRooms","PerDayCharges"};
+DefaultTableModel model=new DefaultTableModel(cols,0);
+JTable table=new JTable(model);
+
+int tr=0,charges=0,id=0;
+String troom="";
+String tbed="";
+
+////////
+
+	
+	private JTabbedPane tabbedPane;
+	private JPanel panel1;
+	private JPanel panel2;
+	private JPanel panel3;
+	private JPanel panel4;
+	 
+	
+	 JButton exitbt3=new JButton("Exit_3");
+	 JButton exitbt4=new JButton("Exit_4");
+	 
+	JLabel lb1=new JLabel(" NEW ENTRY FORM");
+	JLabel lb2=new JLabel("Select the type of room:");
+	JLabel lb3=new JLabel("Select the Beds needed:");
+	JLabel lb4=new JLabel("Total number of room available:");
+	JLabel lb5=new JLabel("Per day charges:");
+	/////
+	JLabel lb6=new JLabel("EDIT FORM");
+	JLabel lb7=new JLabel("Select any room to Edit");
+	JLabel lb8=new JLabel("Select any ID to Edit:");
+	JLabel lb9=new JLabel("Select the type of room:");
+	JLabel lb10=new JLabel("Select thr beds needed:");
+	JLabel lb11=new JLabel("Total number of room available:");
+	JLabel lb12=new JLabel("Per day charges:");
+	JLabel lb13=new JLabel("Occupied:");
+ 
+	
+	JTextField t1=new JTextField();
+	JTextField t2=new JTextField();
+	JTextField t3=new JTextField();
+	JTextField t4=new JTextField();
+	JTextField t5=new JTextField();
+	
+	JComboBox comboroom=new JComboBox();
+	JComboBox combobed=new JComboBox();
+	JComboBox comboroome=new JComboBox();
+	JComboBox combobede=new JComboBox();
+	JComboBox comboide=new JComboBox();
+
+	
+	ButtonGroup group =new ButtonGroup();
+	JButton addbt=new JButton("ADD");
+	JButton backbt=new JButton("BACK");
+	////
+	JButton showdetailsbt=new JButton("Show Details");
+	JButton showallbt=new JButton("SHOW ALL");
+	JButton removeallbt=new JButton("Remaove All");
+	JButton updatebt=new JButton("UPDATE");
+	JTextArea jta=new JTextArea();
+
+
+ public roomdir ()
+ 
+ {
+	 setTitle("ROOM DIRECTORY FORM");
+	 setSize(1000,650);
+	 setLocation(50,10);
+	 setBackground(Color.BLUE);
+	 setResizable(false);
+	 //setLayout(null);
+	 JPanel topPanel=new JPanel();//it is outer panel
+	 //in inner panel add all panel with tab captions
+	 topPanel.setLayout(new BorderLayout());
+	 getContentPane().add(topPanel);
+	 createPage1();
+	 createPage2();
+	 createPage3();
+	 createPage4();
+	 tabbedPane=new JTabbedPane();
+	 tabbedPane.addTab("New Entry", panel1);
+	 tabbedPane.addTab("Edit", panel2);
+	 tabbedPane.addTab("Delete", panel3);
+	 tabbedPane.addTab("Listing", panel4);
+	 
+	 //panel1.setVisible(true);
+	//panel2.setVisible(true);
+	//panel3.setVisible(true);
+	//panel4.setVisible(true);
+	 //in the outer panel add inner panel with all sub panels
+	 topPanel.add(tabbedPane,BorderLayout.CENTER);
+	 tabbedPane.setVisible(true);
+	 
+	
+	 
+	 this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	 setVisible(true);
+ }
+ 
+ void openConnection()
+	{
+		try{
+			Class.forName("com.mysql.jdbc.Driver");
+			con=DriverManager.getConnection("jdbc:mysql://localhost:3306/hmanage","root","");
+			}
+			catch (ClassNotFoundException e){
+				System.out.println("Invalid Driver" +e.getMessage());
+				System.exit(0);
+				
+			}
+			catch (SQLException e){
+				System.out.println("Invalid Dsn" +e.getMessage());
+				System.exit(0);
+				
+				
+			}	
+	}
+	void closeConnection()
+	{
+		try{
+			con.close();
+			}
+			catch(SQLException e){
+				}
+	}
+		
+ 
+ public void createPage1()
+ {
+	 panel1=new JPanel();
+	 panel1.setLayout(null);
+//	 setSize(900,600);
+	//	setLocation(10,10);
+	//	setLayout(null);
+	
+		comboroom.setBounds(250,30,150,20);
+		combobed.setBounds(250,60,150,20);
+		lb1.setBounds(390,3,150,30);
+		t1.setBounds(250,90,150,20);
+		lb2.setBounds(30,30,150,20);
+        t2.setBounds(250,120,150,20);
+		lb3.setBounds(30,60,150,20);
+		lb4.setBounds(30,90,200,20);
+		lb5.setBounds(30,120,150,20);
+		addbt.setBounds(30,210,150,20);
+		backbt.setBounds(200,210,150,20);
+		
+		
+		comboroom.addItem("AC");
+		comboroom.addItem("Non AC");
+		comboroom.addItem("Delux");
+		comboroom.addItem("Super Delux");
+		comboroom.addItem("V.I.P");
+		
+		combobed.addItem("Single Bed");
+		combobed.addItem("Double Bed");
+		combobed.addItem("Family Suit");
+		
+		comboroom.addItemListener(this);
+		combobed.addItemListener(this);
+		comboroom.setSelectedIndex(0);
+		combobed.setSelectedIndex(0);
+	 
+		
+		
+		addbt.addActionListener(this);
+		backbt.addActionListener(this);
+		panel1.add(addbt);
+		panel1.add(backbt);
+		panel1.add(lb1);
+		panel1.add(lb2);
+		panel1.add(lb3);
+		panel1.add(lb4);
+		panel1.add(lb5);
+		panel1.add(comboroom);
+		panel1.add(combobed);
+		
+		panel1.add(t1);
+		panel1.add(t2);
+		
+		 t1.requestFocus();
+		 //addbt.addActionListener(this);
+		 //backbt.addActionListener(this);
+			
+			
+	
+	
+ }
+ 
+ public void createPage2()
+ {
+	 panel2=new JPanel();
+	 panel2.setLayout(null);
+	 lb6.setBounds(390,3,150,30);
+		lb7.setBounds(30,30,150,40);
+		///
+		lb8.setBounds(10,400,150,20);
+		lb9.setBounds(10,440,150,20);
+		lb10.setBounds(10,480,150,20);
+		lb11.setBounds(10,520,180,20);
+		lb12.setBounds(10,560,150,20);
+		lb13.setBounds(10,600,150,20);
+		t3.setBounds(200,520,150,20);
+		t4.setBounds(200,560,150,20);
+		t5.setBounds(200,600,150,20);
+		comboide.setBounds(200,400,150,20);
+		comboroome.setBounds(200,440,150,20);
+		combobede.setBounds(200,480,150,20);
+		showdetailsbt.setBounds(600,70,150,20);
+		showallbt.setBounds(600,110,150,20);
+		removeallbt.setBounds(600,150,150,20);
+		updatebt.setBounds(600,190,150,20);
+		showallbt.addActionListener(this);
+		
+		
+		
+		comboroome.addItem("AC");
+		comboroome.addItem("Non AC");
+		comboroome.addItem("Delux");
+		comboroome.addItem("Super Delux");
+		comboroome.addItem("V.I.P");
+		
+		combobede.addItem("Single Bed");
+		combobede.addItem("Double Bed");
+		combobede.addItem("Family Suit");
+		
+		
+		comboroome.addItemListener(this);
+		combobede.addItemListener(this);
+		comboide.addItemListener(this);
+		comboroome.setSelectedIndex(0);
+		combobede.setSelectedIndex(0);
+
+		
+		
+		panel2.add(showdetailsbt);
+		panel2.add(showallbt);
+		panel2.add(removeallbt);
+		panel2.add(updatebt);
+		panel2.add(lb6);
+		panel2.add(lb7);
+		panel2.add(lb7);
+		panel2.add(lb8);
+		panel2.add(lb9);
+		panel2.add(lb10);
+		panel2.add(lb11);
+		panel2.add(lb12);
+		panel2.add(lb13);
+		panel2.add(comboroome);
+		panel2.add(combobede);
+		panel2.add(comboide);
+		panel2.add(t3);
+		panel2.add(t4);
+		panel2.add(t5);
+		
+		
+		
+	///
+		
+		//table.setBackground(Color.green);
+//		table.setGridColor(Color.MAGENTA);
+		
+		JScrollPane scrollPane=new JScrollPane(table);
+		 scrollPane.setBounds(5,100,500,280);
+		// scrollPane.setBackground(Color.CYAN);
+		 scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		 scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+		panel2.add(scrollPane);
+
+		
+		  try
+	    	{
+	    		openConnection();
+	    		st=con.createStatement();
+	    		rs=st.executeQuery("select * from room");
+	    		if(rs.next())
+	    		{
+	    			do
+	    			{
+	    				
+	    				id=rs.getInt("Id");
+	    				comboide.addItem(""+id);
+	    			}while(rs.next());
+	    		}
+	    		closeConnection();
+	    	}
+	    	catch(Exception ee){
+   }
+	 this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		
+ }
+ public void createPage3()
+ {
+	 panel3=new JPanel();
+	 panel3.setLayout(null);
+	 exitbt3.setBounds(10,90,150,20);
+	 panel3.add(exitbt3);
+	 //exitbt3.addActionListener(this);
+ }
+	 
+	 public void createPage4()
+	 {
+		 panel4=new JPanel();
+		 panel4.setLayout(null);
+		 exitbt4.setBounds(10,120,150,20);
+		 panel4.add(exitbt4);
+		// exitbt4.addActionListener(this);
+ 
+}
+	 
+	 public void actionPerformed(ActionEvent e){
+		 if(e.getActionCommand().equals("ADD"))
+			{
+			int f=1; 
+			try{
+			 tr=Integer.parseInt(t1.getText().trim());
+			 charges=Integer.parseInt(t2.getText().trim());
+			 troom=comboroom.getSelectedItem().toString().trim();
+			 tbed=combobed.getSelectedItem().toString();
+			}
+			catch(Exception ee)
+			{
+				f=0;
+				System.out.println("Entered data is not appropriate"+ee.getMessage());
+			}
+			if(f==1)
+			{
+				System.out.println(troom+"  "+tbed);
+			
+				try
+				{
+					openConnection();
+				st=con.createStatement();
+				String qry="insert into room values(0,'"+troom+"','"+tbed+"',"+tr+",0,"+charges+")";
+				//System.out.print(qry);//to print qry on screen
+				st.executeUpdate(qry); //for insert,update,delete
+				System.out.println(troom+"  "+tbed);
+				closeConnection();
+				}
+				catch(Exception ee)
+				{
+					System.out.println("Entered data is not appropriate"+ee.getMessage());
+				}
+	 	
+			}
+			}
+	 	if(e.getActionCommand().equals("SHOW ALL"))
+	 	{
+	     
+	 		
+	 		int c=table.getRowCount();
+	 		for(int i=0;i<c;i++)
+	 		{
+	 		model.removeRow(0);
+	 	    }
+	 	
+	 		try
+	 		{
+	 			openConnection();
+	 			st=con.createStatement();
+	 			rs=st.executeQuery("select * from room");
+	 			if(rs.next())
+	 			{
+	 				do
+	 				{
+	 					id=rs.getInt("id");
+	 					troom=rs.getString("catofroom");
+	 					tbed=rs.getString("bed");
+	 					tr=rs.getInt("totalrooms");
+	 					charges=rs.getInt("charges");
+	
+	 					Object[] row={id,troom,tbed,tr,charges};
+	 					model.addRow(row);
+	 			
+	 				}while(rs.next());
+	 			}
+	 			closeConnection();
+	 		}
+	 		catch(Exception ee)
+	 		{
+	 	}
+	 		
+	 	}
+	 	/*
+	 		if(e.getActionCommand().equals("REMOVE ALL"))
+	 		{
+	 			int a=table.getRowCount();
+	 			for(int i=0;i<a;i++)
+	 			{
+	 				model.removeRow(0);
+	 			}
+	 			jta.setText("");
+	 		}
+	 			if(e.getActionCommand().equals("SHOW ID"))
+	 			{
+	 				int a=table.getRowCount();
+	 				for(int i=0;i<a;i++)
+	 				{
+	 					model.removeRow(0);
+	 				}
+	 				jta.setText("");
+	 			try
+	 			{	id=Integer.parseInt(comId.getSelectedItem().toString());
+	 				openConnection();
+	 				st=con.createStatement();
+	 				rs=st.executeQuery("select * from emp where id="+id+"");
+	 				if(rs.next())
+	 				{
+	 					
+	 						name=rs.getString("name");
+	 						id=rs.getInt("Id");
+	 						dob=rs.getDate("dob").toString();
+	 						sex=rs.getString("sex");
+	 						salary=rs.getDouble("salary");
+	 						Object[] row={name,dob,id,sex,salary};
+	 						model.addRow(row);
+	 				}
+	 				closeConnection();
+	 			}
+	 			catch(Exception ee)
+	 			{
+	 		
+	 			}
+	 			}
+	 			*/
+	 	
+	 	
+	 	//////////////
+	 	
+	 	
+		 if(e.getActionCommand().equals("UPDATE"))
+      	 {
+			 name=t1.getText().toUpperCase().trim();
+			 salary=Double.parseDouble(t4.getText().trim());
+			 dob=y+"-"+m+"-"+d;
+			 sex=comgender.getSelectedItem().toString().toUpperCase().trim();
+			 try
+			 {
+				 openConnection();
+					st=con.createStatement();
+					String qry="update emp set name='"+name+"', dob='"+dob+"', salary="+salary+", sex='"+sex+"' where id="+id+"";
+					st.executeUpdate(qry);
+					//rs=st.executeQuery("Select * from emp order by id desc limit 1");
+					//if (rs.next())
+					//{set 
+				//id=rs.getInt("id");
+				//lb6.setText(""+id);
+				//	}
+					//else
+					//	lb6.setText("");
+							
+						
+					closeConnection();
+			 }
+			 catch(Exception ee)
+			 {
+			System.out.println("ee"+ee.getMessage()); 
+			 }
+			//	txt=(String)com1.getSelectedItem();
+			//	lb4.setText(txt);
+			
+      	 }
+		 if(e.getActionCommand().equals("SHOW DETAILS"))
+      	 {
+		
+      		try
+			{	id=Integer.parseInt(comboide.getSelectedItem().toString());
+				openConnection();
+				st=con.createStatement();
+				rs=st.executeQuery("select * from room where id="+id+"");
+				if(rs.next())
+				{
+					
+						name=rs.getString("name");
+						id=rs.getInt("Id");
+						dob=rs.getDate("dob").toString().trim();
+						yy=""+dob.charAt(0)+dob.charAt(1)+dob.charAt(2)+dob.charAt(3);
+						 mm=""+dob.charAt(5)+dob.charAt(6);
+						 dd=""+dob.charAt(8)+dob.charAt(9);
+						 y=Integer.parseInt(yy);
+						 m=Integer.parseInt(mm);
+						 d=Integer.parseInt(dd);
+						 
+						
+						 }
+						
+					
+						sex=rs.getString("sex");
+						salary=rs.getDouble("salary");
+						t1.setText(""+name);
+						t2.setText(""+id);
+						t3.setText(""+dob);
+						t4.setText(""+salary);
+						
+				}
+				closeConnection();
+				st=null;
+			}
+			catch(Exception ee)
+			{
+		} 
+      	 }
+}
+
+	 			if(e.getActionCommand().equals("BACK"))
+	 			{
+	 			System.exit(0);	
+	 			}
+	 		}
+		public void itemStateChanged(ItemEvent ie){
+			
+		}
+}		
+	 		
+
+
+				
+		 
+		 
+
+		 
+

@@ -1,0 +1,26 @@
+  ID    Cat.Of Room     Type Of Bed          Tot. Occ.         Rate 
+  ____________________________________________________________________ 
+   3 .  AC              Single Bed             12    0         1500 
+   6 .  Non AC          Double Bed             11    2         1000 
+   7 .  Non AC          Family Suit             8    3         1000 
+   8 .  Delux           Single Bed             12    0         1500 
+   9 .  Delux           Doble Bed              10    0         1600 
+  11 .  V.I.P           Single Bed             19    0         3500 
+  12 .  Super Delux     Single Bed             12    0         1500 
+  13 .  V.I.P           Family Suit            10    0         5500 
+  16 .  Super Delux     Single Bed              4    4         1100 
+  17 .  Super Delux     Doble Bed              20    0         1600 
+  18 .  Super Delux     Family Suit            25    2         2100 
+  20 .  V.I.P           Double Bed             12    0         7800 
+  21 .  AC              Double Bed             12    0         5433 
+  22 .  Non AC          Double Bed             12    0         1234 
+  23 .  Super Delux     Family Suit            23    0         2222 
+  24 .  V.I.P           Family Suit            24    0        12900 
+  25 .  Super Delux     Family Suit            10    0         1234 
+  26 .  V.I.P           Family Suit            12    0         1390 
+  27 .  V.I.P           Family Suit            12    0         9000 
+  28 .  Non AC          Single Bed             12    0         3400 
+  29 .  Delux           Single Bed              3    3         3500 
+  30 .  Super Delux     Single Bed              2    0         1234 
+  31 .  V.I.P           Double Bed              2    0        12344 
+  32 .  V.I.P           Double Bed             23    0         1200 

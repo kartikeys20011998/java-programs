@@ -1,0 +1,42 @@
+import java.applet.*;
+import java.awt.*;
+import java.awt.event.*;
+
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+
+public class entryform extends JFrame implements ActionListener {
+	public static void main(String[] args) {
+		new entryform();
+	}
+	String txt=null;
+	
+	JLabel lb1=new JLabel("ENTRY FORM");
+	JLabel lb2=new JLabel("Enter name:");
+	JLabel lb3=new JLabel("Enter Salary:");
+	JLabel lb4=new JLabel("Select date:");
+	JLabel lb5=new JLabel("Select Gender:");
+	JLabel lb6=new JLabel("Your id is:");
+	JLabel lb7=new JLabel("");
+	
+	ButtonGroup group =new ButtonGroup();
+	
+	JButton comboyearbt=new JButton("combo selection");
+	JButton combomonthbt=new JButton("combo selection");
+	JButton combo28bt=new JButton("combo selection");
+	JButton combo29bt=new JButton("combo selection");
+	JButton combo30bt=new JButton("combo selection");
+	JButton combo31bt=new JButton("combo selection");
+	
+	
+	JButton addbt=new JButton("Add");
+	JButton searchbt=new JButton("Search");
+	JButton updatebt=new JButton("Update");
+	JButton deletebt=new JButton("Delete");
+	JButton exitbt=new JButton("Exit");
+	
+
+
+	}
+
+
